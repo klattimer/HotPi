@@ -79,7 +79,7 @@ void set_speed(float s) {
     }
     speed = s;
     target_speed = s;
-    int is = round(blue);
+    int is = round(s);
     softPwmWrite(PIN_FAN, is);
 }
 
@@ -118,7 +118,7 @@ int main (int argc, char **argv) {
     }
 
     if (argc < 1) {
-        fprintf(stdout, "Usage: pifand /path/to/socket"
+        fprintf(stdout, "Usage: pifand /path/to/socket");
     }
 
     softPwmCreate (PIN_FAN, 0, 255);

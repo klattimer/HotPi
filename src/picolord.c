@@ -49,7 +49,7 @@ float rate_green;
 float rate_blue;
 
 int sock, msgsock;
-
+int delay_time = 1;
 int keeprunning = TRUE;
 
 void intHandler(int dummy) {
@@ -176,7 +176,7 @@ int main (int argc, char **argv) {
     }
 
     if (argc < 1) {
-        fprintf(stdout, "Usage: picolord /path/to/socket"
+        fprintf(stdout, "Usage: picolord /path/to/socket");
     }
 
     softPwmCreate (PIN_RED, RED_MIN, RED_MAX);
@@ -207,7 +207,7 @@ int main (int argc, char **argv) {
     while (keeprunning) {
         read_socket();
         update_color();
-        delay(1);
+        delay(delay_time);
     }
 
     close(sock);
