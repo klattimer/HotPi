@@ -1,4 +1,4 @@
-/* picolor - a unix socket service for changing RGB lights on raspberry-pi's gpio.
+/* picolor - a unix socket service for changing fan speed on raspberry-pi's gpio.
  *
  * Copyright (c) 2012 Karl Lattimer.
  * Author: Karl Lattimer <karl@qdh.org.uk>
@@ -6,7 +6,6 @@
  * Start in the background as a daemon, access the service by firing
  * data at the picolor socket
  *
- * TODO: Make sure we start the fan at 255 then drop it, if the speed value is less than 100 or something
  */
 
 #include <stdio.h>
@@ -31,6 +30,9 @@ float target_speed;
 float speed;
 float rate;
 
+#define SLOW_START 100
+#define MIN_SPEED 70;
+
 int sock, msgsock;
 
 int keeprunning = TRUE;
@@ -39,7 +41,7 @@ void intHandler(int dummy) {
     keeprunning = FALSE;
 }
 
-void update_color() {
+void update_speed() {
     int changed = FALSE;
 
     if (roundf(speed) > roundf(target_speed)) {
@@ -55,12 +57,26 @@ void update_color() {
 }
 
 void set_target_speed(float s) {
+    if (s < MIN_SPEED) {
+        s = MIN_SPEED;
+    }
+    if (s < SLOW_START) {
+        set_speed(255);
+        delay(5);
+    }
     rate = (speed - s) / 255.0f;
     if (rate < 0) rate = rate * -1.0f;
     target_speed = s;
 }
 
 void set_speed(float s) {
+    if (s < MIN_SPEED) {
+        s = MIN_SPEED;
+    }
+    if (s < SLOW_START) {
+        set_speed(255);
+        delay(5);
+    }
     speed = s;
     target_speed = s;
     int is = round(blue);
@@ -130,7 +146,7 @@ int main (int argc, char **argv) {
 
     while (keeprunning) {
         read_socket();
-        update_color();
+        update_speed();
         delay(10);
     }
 
