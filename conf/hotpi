@@ -6,4 +6,6 @@ TRIGGER_HIGH_TEMP=80
 TRIGGER_HIGH_SPEED=255
 TEMP_FILE=/sys/class/thermal/thermal_zone0/temp
 TEMP_MULTIPLIER=1000
-SOCKET=/var/run/pifan
+FAN_SOCKET=/var/run/pifan
+COLOR_SOCKET=/var/run/picolor
+DEFAULT_LED_PATTERN=LED_PATTERN_OFF
