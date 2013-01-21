@@ -150,6 +150,7 @@ int main (int argc, char **argv) {
         delay(10);
     }
 
+    set_speed(0);
     close(sock);
     unlink(argv[1]);
     return 0;

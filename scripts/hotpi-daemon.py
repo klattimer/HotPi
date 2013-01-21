@@ -213,4 +213,5 @@ class HotPiDaemon:
             self.pushPattern(LED_PATTERN_OVERHEAT)
 
 if __name__ == "__main__":
-    HotPiDaemon()
+    h = HotPiDaemon()
+    h.setColor((0,0,0), 0, False)

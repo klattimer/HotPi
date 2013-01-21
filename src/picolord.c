@@ -210,6 +210,7 @@ int main (int argc, char **argv) {
         delay(delay_time);
     }
 
+    set_color(0,0,0);
     close(sock);
     unlink(NAME);
     return 0;
