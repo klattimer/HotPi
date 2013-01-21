@@ -4,7 +4,8 @@
 # * message indicator, fades in and out if messages are waiting *somewhere*
 #      indicates how many messages by how many times it flashes.
 # * static - user defined colour - as from config file, or from the picolord
-# *
+# * blink for LIRC? It's slightly outside of the design of this at present
+#      but potentially possible with pylirc.
 
 import socket
 import signal
