@@ -28,7 +28,8 @@ DEBUG	= -O3
 CC	= gcc
 INCLUDE	= -I/usr/local/include
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE)  -Winline -pipe -static
-
+DESTDIR = /usr
+PREFIX  = 
 LDFLAGS	= -L/usr/local/lib
 LIBS    = -lwiringPi
 
@@ -70,5 +71,17 @@ tags:	$(SRC)
 
 depend:
 	makedepend -Y $(SRC)
+
+uninstall:
+	@rm -rf $(DESTDIR)$(PREFIX)/bin/picolor
+	@rm -rf $(DESTDIR)$(PREFIX)/bin/picolord
+	@rm -rf $(DESTDIR)$(PREFIX)/bin/pifan
+	@rm -rf $(DESTDIR)$(PREFIX)/bin/pifand
+
+install: all
+	@install -m 0755 picolor                $(DESTDIR)$(PREFIX)/bin
+	@install -m 0755 picolord               $(DESTDIR)$(PREFIX)/bin
+	@install -m 0755 pifan                  $(DESTDIR)$(PREFIX)/bin
+	@install -m 0755 pifan                  $(DESTDIR)$(PREFIX)/bin
 
 # DO NOT DELETE
