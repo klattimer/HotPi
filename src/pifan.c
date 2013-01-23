@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
     int instant = FALSE;
 
     int i = 2;
-    for (i = 2; i < argc; i = i++) {
+    for (i = 2; i < argc; i++) {
         if (strncmp(argv[i], "-i", 2) == 0) {
             instant = TRUE;
         }
