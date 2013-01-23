@@ -5,6 +5,9 @@
  *
  * Start in the background as a daemon, access the service by firing
  * data at the picolor socket
+ *
+ * TODO
+ *  we need to add support for reading the current colour
  */
 
 #include <stdio.h>
@@ -22,9 +25,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#define PIN_RED 4
-#define PIN_GREEN 5
-#define PIN_BLUE 3
+#define PIN_RED 5
+#define PIN_GREEN 3
+#define PIN_BLUE 4
 
 #define RED_MIN 0
 #define RED_MAX 255
@@ -90,11 +93,10 @@ void update_color() {
     b = (int)roundf(blue);
     // Set the color on the PWM
     if (changed) {
-        printf("Current Color: %0f %0f %0f\n", red, green, blue);
+        softPwmWrite(PIN_RED, r);
+        softPwmWrite(PIN_GREEN, g);
+        softPwmWrite(PIN_BLUE, b);
     }
-    softPwmWrite(PIN_RED, r);
-    softPwmWrite(PIN_GREEN, g);
-    softPwmWrite(PIN_BLUE, b);
 }
 
 void set_target_color(float r, float g, float b) {
@@ -146,10 +148,9 @@ void read_socket() {
             bzero(buf, sizeof(buf));
             rval = read(msgsock, buf, 5);
             if (rval < 0) {
-                perror("reading stream message");
+                perror("picolor: Error reading stream message");
                 break;
             } else if (rval == 0) {
-                printf("Ending connection\n");
                 break;
             } else if (buf[0] != 0) {
                 r = (int)buf[1];
@@ -188,18 +189,17 @@ int main (int argc, char **argv) {
     struct sockaddr_un server;
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("opening stream socket");
+        perror("picolord: Error opening stream socket");
         exit(1);
     }
     fcntl(sock, F_SETFL, O_NONBLOCK);
     server.sun_family = AF_UNIX;
     strcpy(server.sun_path, argv[1]);
     if (bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un))) {
-        perror("binding stream socket");
+        perror("picolord: Error binding stream socket");
         exit(1);
     }
 
-    printf("Socket has name %s\n", server.sun_path);
     listen(sock, 5);
 
     // Catch kill signals and ctrl+c
@@ -214,6 +214,7 @@ int main (int argc, char **argv) {
     }
 
     set_color(0,0,0);
+    delay(10);
     close(sock);
     unlink(argv[1]);
     return 0;

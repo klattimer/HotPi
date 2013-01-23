@@ -6,6 +6,8 @@
  * Start in the background as a daemon, access the service by firing
  * data at the picolor socket
  *
+ * TODO
+ *  we need to add support for getting the current fan speed
  */
 
 #include <stdio.h>
@@ -97,10 +99,9 @@ void read_socket() {
             bzero(buf, sizeof(buf));
             rval = read(msgsock, buf, 2);
             if (rval < 0) {
-                perror("reading stream message");
+                perror("pifand: Error reading stream message");
                 break;
             } else if (rval == 0) {
-                printf("Ending connection\n");
                 break;
             } else if (buf[0] != 0) {
                 s = (int)buf[1];
@@ -155,6 +156,7 @@ int main (int argc, char **argv) {
     }
 
     set_speed(0);
+    delay(10);
     close(sock);
     unlink(argv[1]);
     return 0;

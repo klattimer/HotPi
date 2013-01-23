@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("opening stream socket");
+        perror("picolor: Error opening stream socket");
         return 2;
     }
 
@@ -82,12 +82,12 @@ int main(int argc, char **argv) {
 
     if (connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)) < 0) {
         close(sock);
-        perror("connecting stream socket");
+        perror("picolor: Error connecting stream socket");
         return 3;
     }
 
     if (write(sock, buf, sizeof(buf)) < 0)
-        perror("writing on stream socket");
+        perror("picolor: Error writing on stream socket");
 
     close(sock);
     return 0;
