@@ -54,8 +54,10 @@ void update_speed() {
         changed = TRUE;
     }
 
-    int s = roundf(speed);
-    softPwmWrite(PIN_FAN, s);
+    if (changed) {
+        int s = roundf(speed);
+        softPwmWrite(PIN_FAN, s);
+    }
 }
 
 void set_speed(float s) {
