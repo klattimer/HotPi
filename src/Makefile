@@ -63,7 +63,7 @@ picolor:	picolor.o
 	@$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJ) *~ core tags test1 test2 speed lcd wfi piface gertboard nes delayTest softPwm
+	rm -f $(OBJ) *~ core tags picolor picolord pifan pifand
 
 tags:	$(SRC)
 	@echo [ctags]
