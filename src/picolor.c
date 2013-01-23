@@ -37,10 +37,10 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    int r,g,b, delay, duration;
+    int r,g,b;//, delay, duration;
     int instant = FALSE;
 
-    int i;
+    int i = 2;
     for (i = 2; i < argc; i = i++) {
         if (strncmp(argv[i], "-i", 2) == 0) {
             instant = TRUE;
