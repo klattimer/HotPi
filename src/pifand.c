@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <wiringPi.h>
 #include <softPwm.h>
 
