@@ -144,7 +144,7 @@ void read_socket() {
     if (msgsock != -1) {
         while (1) {
             bzero(buf, sizeof(buf));
-            rval = read(msgsock, buf, 4);
+            rval = read(msgsock, buf, 5);
             if (rval < 0) {
                 perror("reading stream message");
                 break;
