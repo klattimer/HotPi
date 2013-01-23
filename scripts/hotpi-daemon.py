@@ -22,15 +22,17 @@ CONF_FILE = "/etc/default/hotpi"
  LED_PATTERN_OFFLINE,
  LED_PATTERN_SECURITY,
  LED_PATTERN_UPDATES,
- LED_PATTERN_OFF) = (8,4,2,1,0)
+ LED_PATTERN_MESSAGES,
+ LED_PATTERN_STATIC,
+ LED_PATTERN_OFF) = (32,16,8,4,2,1,0)
 
 URL_REFERENCES = ["www.google.com"] # Places to check for an internet connection
 
 class HotPiDaemon:
     def __init__(self):
         self.readConfig()
-        self._running = True
         self._default_pattern = eval(self._conf['DEFAULT_LED_PATTERN'])
+        self._default_color = self.parseColor(self._conf['DEFAULT_STATIC_COLOR'])
         self._current_pattern_index = 0
         self._check_interval_updates = 20 * 60
         self._check_interval_temp = 60
@@ -38,19 +40,20 @@ class HotPiDaemon:
         self._last_check_time_updates = 0
         self._last_check_time_temp = 0
         self._last_check_time_online = 0
+        self._no_of_messages = 0
+        self._message_gap = ((10,0,20), 200, False) # gap between message blinks
 
         self._patterns = {}
         self._patterns[LED_PATTERN_OVERHEAT] = [((255,0,0), 100, True), ((0,0,255), 100, True)]
         self._patterns[LED_PATTERN_SECURITY] = [((255,30,0), 1000, False), ((255,0,20), 1000, False)]
         self._patterns[LED_PATTERN_UPDATES] = [((140,200,0), 1000, False), ((40,100,255), 1000, False)]
         self._patterns[LED_PATTERN_OFFLINE] = [((70,140,0), 500, True), ((0,0,0), 500, True)]
+        self._patterns[LED_PATTERN_MESSAGES] = [((20,0,40), 100, False), ((20,0,200), 180, False)]
+        if self._default_color != [0,0,0]:
+            self._patterns[LED_PATTERN_STATIC] = [((self._default_color[0], self._default_color[1], self._default_color[2]), 1000, False)]
         self._patterns[LED_PATTERN_OFF] = [((0,0,0),0,False)]
 
         self._active_patterns = self._default_pattern
-
-        signal.signal(signal.SIGINT, self._signal_handler)
-        signal.signal(signal.SIGKILL, self._signal_handler)
-        signal.signal(signal.SIGHUP, self._signal_handler)
 
         # Check sockets exist
         self._enable_fan = True
@@ -70,6 +73,11 @@ class HotPiDaemon:
             print "HotPiDaemon: Fan and LED are disabled, nothing do do :("
             sys.exit(1)
 
+        self._running = True
+        signal.signal(signal.SIGINT, self._signal_handler)
+        signal.signal(signal.SIGKILL, self._signal_handler)
+        signal.signal(signal.SIGHUP, self._signal_handler)
+        
         while self._running:
             ct = time.time()
             if ct - self._last_check_time_updates >= self._check_interval_updates:
@@ -85,6 +93,9 @@ class HotPiDaemon:
             if self._current_pattern_index > len(top_pattern) - 1:
                 self._current_pattern_index = 0
 
+    def _signal_handler(self, signal, frame):
+        self._running = False
+        
     def readConfig(self):
         if not os.path.isfile(CONF_FILE):
             print "HotPiDaemon: Config file: \"%s\" does not exist" % CONF_FILE
@@ -100,7 +111,8 @@ class HotPiDaemon:
                     "TRIGGER_MEDIUM_SPEED" : "150",
                     "TRIGGER_HIGH_TEMP" : "75",
                     "TRIGGER_HIGH_SPEED" : "255",
-                    "DEFAULT_LED_PATTERN" : "LED_PATTERN_OFF" }
+                    "DEFAULT_LED_PATTERN" : "LED_PATTERN_OFF",
+                    "DEFAULT_STATIC_COLOR" : "#FF00D4" }
 
         for line in config_file:
             line = line.strip()
@@ -110,12 +122,10 @@ class HotPiDaemon:
         self._conf = config
 
     def parseColor(self,color):
+        if len(color) < 6: return [0,0,0]
         color = color[len(color) - 6:] # last 6 chars of the string
         split = (color[0:2], color[2:4], color[4:6])
         return [int(x, 16) for x in split]
-
-    def _signal_handler(self, signal, frame):
-        self._running = False
 
     def setColor(self, color, duration=255, instant=False):
         (r,g,b) = color
@@ -138,6 +148,15 @@ class HotPiDaemon:
             return self._patterns[LED_PATTERN_SECURITY]
         if self._active_patterns & LED_PATTERN_UPDATES == LED_PATTERN_UPDATES:
             return self._patterns[LED_PATTERN_UPDATES]
+        if self._active_patterns & LED_PATTERN_MESSAGES == LED_PATTERN_MESSAGES:
+            if self._no_of_messages > 0:
+                p = []
+                for i in range(self._no_of_messages):
+                    p.extend(self._patterns[LED_PATTERN_MESSAGES])
+                p.append(self._message_gap)
+                return p
+        if self._active_patterns & LED_PATTERN_STATIC == LED_PATTERN_STATIC:
+            return self._patterns[LED_PATTERN_STATIC]
         return self._patterns[LED_PATTERN_OFF]
 
     def pushPattern(self, pattern):
@@ -196,6 +215,10 @@ class HotPiDaemon:
                 self.popPattern(LED_PATTERN_UPDATES)
                 self.popPattern(LED_PATTERN_SECURITY)
 
+    def checkMessages(self):
+        # TODO: how could/should we get no of messages waiting and mark/unmark messages? 
+        self._no_of_messages = 0
+        
     def checkTemp(self):
         t = self.getTemp()
         if t < int(self._conf['TRIGGER_LOW_TEMP']):
