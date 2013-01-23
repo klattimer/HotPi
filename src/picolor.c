@@ -30,14 +30,14 @@ void usage(char *error, char *binaryPath) {
 int main(int argc, char **argv) {
     int sock;
     struct sockaddr_un server;
-    char buf[4];
+    char buf[5];
 
     if (argc < 2) {
         usage("Too Few Arguments", argv[0]);
         return 1;
     }
 
-    int r,g,b, delay, duration;
+    int r,g,b, delay = 1, duration;
     int instant = FALSE;
 
     int i = 2;
