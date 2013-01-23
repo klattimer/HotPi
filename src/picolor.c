@@ -9,6 +9,9 @@
 #include <sys/un.h>
 #include <stdio.h>
 
+#define TRUE 1
+#define FALSE 0
+
 void usage(char *error, char *binaryPath) {
     if (error) {
         printf ("Error: %s\n", error);
@@ -19,7 +22,7 @@ void usage(char *error, char *binaryPath) {
     // TODO: Not currently supported in the service
     // printf (" -d <ms>   Set the delay in milliseconds between steps\n");
     // printf (" -l <s>    Set the time it should take to change to the new colour\n");
-    printf("Example: %s /var/run/picolor \#420088\n", binaryPath);
+    printf("Example: %s /var/run/picolor \\#420088\n", binaryPath);
 }
 
 int main(int argc, char **argv) {

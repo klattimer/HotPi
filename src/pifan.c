@@ -9,6 +9,9 @@
 #include <sys/un.h>
 #include <stdio.h>
 
+#define TRUE 1
+#define FALSE 0
+
 void usage(char *error, char *binaryPath) {
     if (error) {
         printf ("Error: %s\n", error);
