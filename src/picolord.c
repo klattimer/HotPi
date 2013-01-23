@@ -137,7 +137,7 @@ float scale_value(float v, float min, float max) {
 }
 
 void read_socket() {
-    char buf[4];
+    char buf[5];
     int r,g,b;
     int rval;
     msgsock = accept(sock, 0, 0);
