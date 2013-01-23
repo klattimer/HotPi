@@ -6,8 +6,6 @@
  * Start in the background as a daemon, access the service by firing
  * data at the picolor socket
  *
- * TODO
- *  we need to add support for getting the current fan speed
  */
 
 #include <stdio.h>
@@ -107,6 +105,10 @@ void read_socket() {
                 s = (int)buf[1];
                 if (buf[0] == '\x42') {
                     set_target_speed(s);
+                } else if (buf[0] == '\x68') {
+                    buf[0] = (char)speed;
+                    buf[1] = 0;
+                    write(msgsock, buf, 2);
                 } else {
                     set_speed(s);
                 }
@@ -130,18 +132,17 @@ int main (int argc, char **argv) {
     struct sockaddr_un server;
     sock = socket(AF_UNIX, SOCK_STREAM, 0);
     if (sock < 0) {
-        perror("opening stream socket");
+        perror("pifand: Error opening stream socket");
         exit(1);
     }
     fcntl(sock, F_SETFL, O_NONBLOCK);
     server.sun_family = AF_UNIX;
     strcpy(server.sun_path, argv[1]);
     if (bind(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un))) {
-        perror("binding stream socket");
+        perror("pifand: Error binding stream socket");
         exit(1);
     }
 
-    printf("Socket has name %s\n", server.sun_path);
     listen(sock, 5);
 
     // Catch kill signals and ctrl+c

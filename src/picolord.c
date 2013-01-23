@@ -6,8 +6,6 @@
  * Start in the background as a daemon, access the service by firing
  * data at the picolor socket
  *
- * TODO
- *  we need to add support for reading the current colour
  */
 
 #include <stdio.h>
@@ -164,6 +162,12 @@ void read_socket() {
 
                 if (buf[0] == '\x42') {
                     set_target_color(r,g,b);
+                } else if (buf[0] == '\x68') {
+                    buf[0] = (char)red;
+                    buf[1] = (char)green;
+                    buf[2] = (char)blue;
+                    buf[3] = 0;
+                    write(msgsock, buf, 4);
                 } else {
                     set_color(r,g,b);
                 }
