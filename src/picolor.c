@@ -46,9 +46,11 @@ int main(int argc, char **argv) {
             instant = TRUE;
         } else if (strncmp(argv[i], "-d", 2) == 0) {
             delay = atoi(argv[i + 1]);
+            if (delay > 255) delay = 255;
             i++;
         } else if (strncmp(argv[i], "-l", 2) == 0) {
             duration = atoi(argv[i + 1]);
+            delay = (int)roundf(duration / 255.0f);
             i++;
         }
     }
@@ -63,6 +65,7 @@ int main(int argc, char **argv) {
         buf[1] = (char)r;
         buf[2] = (char)g;
         buf[3] = (char)b;
+        //buf[4] = (char)delay;
     } else {
         usage("Cannot parse colour: \"%s\"", argv[argc - 1]);
         return 1;

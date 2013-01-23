@@ -214,7 +214,7 @@ int main (int argc, char **argv) {
 
     set_color(0,0,0);
     close(sock);
-    unlink(NAME);
+    unlink(argv[1]);
     return 0;
 }
 
