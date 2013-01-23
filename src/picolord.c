@@ -155,6 +155,7 @@ void read_socket() {
                 r = (int)buf[1];
                 g = (int)buf[2];
                 b = (int)buf[3];
+                delay_time = (int)buf[4];
                 // Scale the values between the min and max
                 r = scale_value(r, RED_MIN, RED_MAX);
                 g = scale_value(g, GREEN_MIN, GREEN_MAX);

@@ -22,9 +22,8 @@ void usage(char *error, char *binaryPath) {
     printf ("Usage: %s <socket> [options] <target colour>\n", binaryPath);
     printf ("Options:\n");
     printf (" -i        Change colour immediately\n");
-    // TODO: Not currently supported in the service
-    // printf (" -d <ms>   Set the delay in milliseconds between steps\n");
-    // printf (" -l <s>    Set the time it should take to change to the new colour\n");
+    printf (" -d <ms>   Set the delay in milliseconds between steps\n");
+    printf (" -l <s>    Set the time it should take to change to the new colour\n");
     printf("Example: %s /var/run/picolor \\#420088\n", binaryPath);
 }
 
@@ -50,7 +49,7 @@ int main(int argc, char **argv) {
             if (delay > 255) delay = 255;
             i++;
         } else if (strncmp(argv[i], "-l", 2) == 0) {
-            duration = atoi(argv[i + 1]);
+            duration = atoi(argv[i + 1]) * 1000;
             delay = (int)roundf(duration / 255.0f);
             i++;
         }
@@ -66,7 +65,7 @@ int main(int argc, char **argv) {
         buf[1] = (char)r;
         buf[2] = (char)g;
         buf[3] = (char)b;
-        //buf[4] = (char)delay;
+        buf[4] = (char)delay;
     } else {
         usage("Cannot parse colour: \"%s\"", argv[argc - 1]);
         return 1;
