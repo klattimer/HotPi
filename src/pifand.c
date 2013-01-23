@@ -33,7 +33,7 @@ float speed;
 float rate;
 
 #define SLOW_START 100
-#define MIN_SPEED 70;
+#define MIN_SPEED 70
 
 int sock, msgsock;
 
