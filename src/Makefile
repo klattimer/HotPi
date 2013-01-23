@@ -37,6 +37,7 @@ LIBS    = -lwiringPi
 
 SRC	=	picolord.c picolor.c pifand.c pifan.c
 BINS	=	picolord picolor pifand pifan
+OBJ     =       $(SRC:.c=.o)
 
 all: picolor pifan picolord pifand
 
