@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <math.h>
 #include <wiringPi.h>
 #include <softPwm.h>
 
@@ -57,19 +58,6 @@ void update_speed() {
     softPwmWrite(PIN_FAN, s);
 }
 
-void set_target_speed(float s) {
-    if (s < MIN_SPEED) {
-        s = MIN_SPEED;
-    }
-    if (s < SLOW_START) {
-        set_speed(255);
-        delay(5);
-    }
-    rate = (speed - s) / 255.0f;
-    if (rate < 0) rate = rate * -1.0f;
-    target_speed = s;
-}
-
 void set_speed(float s) {
     if (s < MIN_SPEED) {
         s = MIN_SPEED;
@@ -82,6 +70,19 @@ void set_speed(float s) {
     target_speed = s;
     int is = round(s);
     softPwmWrite(PIN_FAN, is);
+}
+
+void set_target_speed(float s) {
+    if (s < MIN_SPEED) {
+        s = MIN_SPEED;
+    }
+    if (s < SLOW_START) {
+        set_speed(255);
+        delay(5);
+    }
+    rate = (speed - s) / 255.0f;
+    if (rate < 0) rate = rate * -1.0f;
+    target_speed = s;
 }
 
 void read_socket() {
