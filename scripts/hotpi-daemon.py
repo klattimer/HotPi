@@ -50,8 +50,8 @@ class HotPiDaemon:
         self._patterns[LED_PATTERN_OFFLINE] = [((70,140,0), 500, True), ((0,0,0), 500, True)]
         self._patterns[LED_PATTERN_MESSAGES] = [((20,0,40), 100, False), ((20,0,200), 180, False)]
         if self._default_color != [0,0,0]:
-            self._patterns[LED_PATTERN_STATIC] = [((self._default_color[0], self._default_color[1], self._default_color[2]), 1000, False)]
-        self._patterns[LED_PATTERN_OFF] = [((0,0,0),0,False)]
+            self._patterns[LED_PATTERN_STATIC] = [((self._default_color[0], self._default_color[1], self._default_color[2]), 10000, False)]
+        self._patterns[LED_PATTERN_OFF] = [((0,0,0),10000,False)]
 
         self._active_patterns = self._default_pattern
 

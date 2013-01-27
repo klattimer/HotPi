@@ -2,7 +2,7 @@
 
 # Build and install wiringPi
 cd wiringPi/wiringPi
-make dynamic
+make
 make install
 make static
 make install-static

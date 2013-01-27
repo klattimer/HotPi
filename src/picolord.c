@@ -23,9 +23,9 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#define PIN_RED 5
-#define PIN_GREEN 3
-#define PIN_BLUE 4
+#define PIN_RED 3
+#define PIN_GREEN 4
+#define PIN_BLUE 5
 
 #define RED_MIN 0
 #define RED_MAX 255
