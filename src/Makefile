@@ -82,6 +82,6 @@ install: all
 	@install -m 0755 picolor                $(DESTDIR)$(PREFIX)/bin
 	@install -m 0755 picolord               $(DESTDIR)$(PREFIX)/bin
 	@install -m 0755 pifan                  $(DESTDIR)$(PREFIX)/bin
-	@install -m 0755 pifan                  $(DESTDIR)$(PREFIX)/bin
+	@install -m 0755 pifand                 $(DESTDIR)$(PREFIX)/bin
 
 # DO NOT DELETE
