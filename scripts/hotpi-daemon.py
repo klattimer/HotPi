@@ -35,10 +35,10 @@ class HotPiDaemon:
         self._default_color = self.parseColor(self._conf['DEFAULT_STATIC_COLOR'])
         self._current_pattern_index = 0
         self._check_interval_updates = 20 * 60
-        self._check_interval_temp = 60
+        self._check_interval_cpu = 60
         self._check_interval_online = 15 * 60
         self._last_check_time_updates = 0
-        self._last_check_time_temp = 0
+        self._last_check_time_cpu = 0
         self._last_check_time_online = 0
         self._no_of_messages = 0
         self._message_gap = ((10,0,20), 200, False) # gap between message blinks
@@ -83,7 +83,7 @@ class HotPiDaemon:
             ct = time.time()
             if ct - self._last_check_time_updates >= self._check_interval_updates:
                 self.checkUpdates()
-            if ct - self._last_check_time_temp >= self._check_interval_temp:
+            if ct - self._last_check_time_cpu >= self._check_interval_cpu:
                 self.checkCPU()
             if ct - self._last_check_time_online >= self._check_interval_online:
                 self.checkOnline()
@@ -118,8 +118,8 @@ class HotPiDaemon:
                     "TEMP_LOW" : "40",
                     "TEMP_LOW_FANSPEED" : "90",
                     "TEMP_HIGH" : "75",
-                    "TEMP_ALARM" : "85",
                     "TEMP_HIGH_FANSPEED" : "255",
+                    "TEMP_ALARM" : "85",
                     "DEFAULT_LED_PATTERN" : "LED_PATTERN_OFF",
                     "DEFAULT_STATIC_COLOR" : "#FF00D4" }
 
