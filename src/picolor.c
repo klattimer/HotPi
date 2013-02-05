@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
                 r = buf[0];
                 g = buf[1];
                 b = buf[2];
-                printf("#%2x%2x%2x", r,g,b);
+                printf("#%2x%2x%2x\n", r,g,b);
             }
 
             close(sock);
