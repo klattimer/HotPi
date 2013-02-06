@@ -33,6 +33,8 @@ class HotPiDaemon:
         self.readConfig()
         self._default_pattern = eval(self._conf['DEFAULT_LED_PATTERN'])
         self._default_color = self.parseColor(self._conf['DEFAULT_STATIC_COLOR'])
+        if self._default_color == [0,0,0]: self._default_color = self.getColor()
+        
         self._current_pattern_index = 0
         self._check_interval_updates = 20 * 60
         self._check_interval_cpu = 60
@@ -89,6 +91,10 @@ class HotPiDaemon:
                 self.checkOnline()
             top_pattern = self.topPattern()
             if top_pattern == last_top: continue
+            if top_pattern == self._patterns[LED_PATTERN_STATIC]:
+                # Save the colour in case it was changed outside hotpi-daemon
+                self._default_color = self.getColor()
+                
             last_top = top_pattern
             (color, duration, instant) = top_pattern[self._current_pattern_index]
             self.setColor(color, duration, instant)
@@ -135,6 +141,17 @@ class HotPiDaemon:
         color = color[len(color) - 6:] # last 6 chars of the string
         split = (color[0:2], color[2:4], color[4:6])
         return [int(x, 16) for x in split]
+
+    def getColor( self ):
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        sock.connect(self._conf['COLOR_SOCKET'])
+        sock.send("\x68");
+        data = sock.recv(4)
+        sock.close()
+        r = int(data[0])
+        g = int(data[1])
+        b = int(data[2])
+        return [r,g,b]
 
     def setColor(self, color, duration=255, instant=False):
         (r,g,b) = color
