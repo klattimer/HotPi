@@ -24,6 +24,7 @@ void usage(char *error, char *binaryPath) {
     printf (" -i        Change colour immediately\n");
     printf (" -d <ms>   Set the delay in milliseconds between steps\n");
     printf (" -l <s>    Set the time it should take to change to the new colour\n");
+    printf (" -r        Print the current LED colour");
     printf("Example: %s /var/run/picolor \\#420088\n", binaryPath);
 }
 
@@ -52,6 +53,28 @@ int main(int argc, char **argv) {
             duration = atoi(argv[i + 1]) * 1000;
             delay = (int)roundf(duration / 255.0f);
             i++;
+        } else if (strncmp(argv[i], "-r", 2) == 0) {
+            buf[0] = '\x68';
+            if (connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)) < 0) {
+                close(sock);
+                perror("picolor: Error connecting stream socket");
+                return 3;
+            }
+
+            if (write(sock, buf, 1) < 0)
+                perror("picolor: Error writing on stream socket");
+                
+            int rval = read(sock, buf, 5);
+            int r,g,b;
+            if (rval >= 3) {
+                r = buf[0];
+                g = buf[1];
+                b = buf[2];
+                printf("#%2x%2x%2x\n", r,g,b);
+            }
+
+            close(sock);
+            return 0;
         }
     }
 
