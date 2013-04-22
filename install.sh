@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Install wiringPi
-cd wiringPi/wiringPi
-make install
-make install-static
-cd ../../
 
 # Install picolor & pifan utilities
 cd src
