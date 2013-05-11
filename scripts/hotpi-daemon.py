@@ -216,10 +216,11 @@ class HotPiDaemon:
         sock.send("\x68")
         data = sock.recv(2)
         sock.close()
-        if len(data) == 0:
+        try:
+            return (ord(data[0]) * 16) + ord(data[1])
+        except:
             return 0
-        return int(data)
-
+            
     def setFanSpeed(self, speed):
         if speed == self._speed: return
         self._speed = speed
