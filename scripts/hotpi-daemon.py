@@ -266,12 +266,7 @@ class HotPiDaemon:
         t = self.getTemp()
         s = self.getCPUSpeed()
         
-        fanspeed = self.calculateFanSpeed(int(self._conf['TEMP_LOW']), int(self._conf['TEMP_LOW_FANSPEED']),
-                                          int(self._conf['TEMP_HIGH']), int(self._conf['TEMP_HIGH_FANSPEED']),
-                                          t) +
-                   self.calculateFanSpeed(int(self._conf['CPUSPEED_LOW']), int(self._conf['CPUSPEED_LOW_FANSPEED']),
-                                          int(self._conf['CPUSPEED_HIGH']), int(self._conf['CPUSPEED_HIGH_FANSPEED']),
-                                          s)
+        fanspeed = self.calculateFanSpeed(int(self._conf['TEMP_LOW']), int(self._conf['TEMP_LOW_FANSPEED']), int(self._conf['TEMP_HIGH']), int(self._conf['TEMP_HIGH_FANSPEED']), t) + self.calculateFanSpeed(int(self._conf['CPUSPEED_LOW']), int(self._conf['CPUSPEED_LOW_FANSPEED']), int(self._conf['CPUSPEED_HIGH']), int(self._conf['CPUSPEED_HIGH_FANSPEED']), s)
         self.setFanSpeed(fanspeed)
         if t >= int(self._conf['TEMP_ALARM']):
             self.pushPattern(LED_PATTERN_OVERHEAT)
