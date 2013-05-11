@@ -89,15 +89,17 @@ class HotPiDaemon:
                 self.checkCPU()
             if ct - self._last_check_time_online >= self._check_interval_online:
                 self.checkOnline()
+                
             top_pattern = self.topPattern()
-            if top_pattern == last_top: continue
+            (color, duration, instant) = top_pattern[self._current_pattern_index]
+            last_top = top_pattern
+            
             if top_pattern == self._patterns[LED_PATTERN_STATIC]:
                 # Save the colour in case it was changed outside hotpi-daemon
                 self._default_color = self.getColor()
-                
-            last_top = top_pattern
-            (color, duration, instant) = top_pattern[self._current_pattern_index]
+            
             self.setColor(color, duration, instant)
+            
             self._current_pattern_index = self._current_pattern_index + 1
             if self._current_pattern_index > len(top_pattern) - 1:
                 self._current_pattern_index = 0
