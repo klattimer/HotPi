@@ -88,10 +88,13 @@ class HotPiDaemon:
             ct = time.time()
             if ct - self._last_check_time_updates >= self._check_interval_updates:
                 self.checkUpdates()
+                self._last_check_time_updates = ct
             if ct - self._last_check_time_cpu >= self._check_interval_cpu:
                 self.checkCPU()
+                self._last_check_time_cpu = ct
             if ct - self._last_check_time_online >= self._check_interval_online:
                 self.checkOnline()
+                self._last_check_time_online = ct
                 
             top_pattern = self.topPattern()
             (color, duration, instant) = top_pattern[self._current_pattern_index]
