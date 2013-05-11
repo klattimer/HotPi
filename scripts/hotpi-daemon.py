@@ -26,7 +26,7 @@ CONF_FILE = "/etc/default/hotpi"
  LED_PATTERN_STATIC,
  LED_PATTERN_OFF) = (32,16,8,4,2,1,0)
 
-URL_REFERENCES = ["www.google.com", "www.yahoo.com", "www.bing.com", "www.facebook.com"] # Places to check for an internet connection
+URL_REFERENCES = ["http://www.google.com", "http://www.yahoo.com", "http://www.bing.com", "http://www.facebook.com"] # Places to check for an internet connection
 
 class HotPiDaemon:
     def __init__(self):
