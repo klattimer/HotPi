@@ -216,6 +216,7 @@ class HotPiDaemon:
         sock.send("\x68");
         data = sock.recv(2)
         sock.close()
+        if (len(data) == 0) return 0
         return int(data)
 
     def setFanSpeed(self, speed):
