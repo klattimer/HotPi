@@ -15,7 +15,7 @@
 ### END INIT INFO
 
 # Source function library.
-. /etc/rc.d/init.d/functions
+. /lib/lsb/init-functions
 . /etc/default/hotpi
 
 start() {
