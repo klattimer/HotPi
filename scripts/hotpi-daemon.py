@@ -59,11 +59,11 @@ class HotPiDaemon:
 
         # Check sockets exist
         self._enable_fan = True
-        if not os.path.isfile(self._conf['FAN_SOCKET']):
+        if not os.path.exists(self._conf['FAN_SOCKET']):
             self._enable_fan = False
 
         self._enable_led = True
-        if not os.path.isfile(self._conf['COLOR_SOCKET']):
+        if not os.path.exists(self._conf['COLOR_SOCKET']):
             self._enable_led = False
 
         self._speed = self.getFanSpeed()
