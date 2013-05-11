@@ -1,0 +1,78 @@
+#!/bin/sh
+#
+# hotpi Starts/stop the "hotpi" daemons
+#
+# chkconfig:   345 95 5
+# description: Hardware support for the HotPi GPIO board
+
+### BEGIN INIT INFO
+# Required-Start: $local_fs
+# Required-Stop: $local_fs
+# Default-Start: 345
+# Default-Stop: 95
+# Short-Description: Starts/stop the "hotpi" daemons
+# Description:      Hardware support for the HotPi GPIO board
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+. /etc/default/hotpi
+
+start() {
+    logger "Starting fan control service"
+    exec /usr/bin/pifand $FAN_SOCKET 2>&1 &
+    logger "Starting RGB LED control service"
+    exec /usr/bin/picolord $COLOR_SOCKET 2>&1 &
+    renice -19 `pidof picolord`
+    chmod 644 $COLOR_SOCKET
+    chmod 644 $FAN_SOCKET
+    chown root.users $COLOR_SOCKET
+    chown root.users $FAN_SOCKET
+    logger "Starting HotPi monitoring daemon"
+    exec /usr/bin/hotpi-daemon 2>&1 &
+}
+
+stop() {
+    if [ -f $FAN_SOCKET ]; then
+        kill -2 `pidof pifand`
+        sleep 1
+        if [ -f $FAN_SOCKET ]; then
+            kill -9 `pidof pifand`
+            kill -15 `pidof pifand`
+            sleep 1
+            rm -f $FAN_SOCKET
+        fi
+    fi
+    
+    if [ -f $COLOR_SOCKET ]; then
+        kill -2 `pidof picolord`
+        sleep 1
+        if [ -f $COLOR_SOCKET ]; then
+            kill -9 `pidof picolord`
+            kill -15 `pidof picolord`
+            sleep 1
+            rm -f $COLOR_SOCKET
+        fi
+    fi
+}
+
+restart () {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit $?
