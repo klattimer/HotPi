@@ -218,8 +218,8 @@ int main (int argc, char **argv) {
     }
 
     set_color(0,0,0);
-    delay(10);
-    close(sock);
+    delay(100);
+    if (sock) close(sock);
     unlink(argv[1]);
     return 0;
 }

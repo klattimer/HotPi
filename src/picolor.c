@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         } else if (strncmp(argv[i], "-r", 2) == 0) {
             buf[0] = '\x68';
             if (connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)) < 0) {
-                close(sock);
+                if (sock) close(sock);
                 perror("picolor: Error connecting stream socket");
                 return 3;
             }
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
                 printf("#%2x%2x%2x\n", r,g,b);
             }
 
-            close(sock);
+            if (sock) close(sock);
             return 0;
         }
     }
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
     if (write(sock, buf, sizeof(buf)) < 0)
         perror("picolor: Error writing on stream socket");
 
-    close(sock);
+    if (sock) close(sock);
     return 0;
 }
 

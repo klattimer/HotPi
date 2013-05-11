@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     strcpy(server.sun_path, argv[1]);
 
     if (connect(sock, (struct sockaddr *) &server, sizeof(struct sockaddr_un)) < 0) {
-        close(sock);
+        if (sock) close(sock);
         perror("connecting stream socket");
         return 3;
     }
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
     if (write(sock, buf, sizeof(buf)) < 0)
         perror("writing on stream socket");
 
-    close(sock);
+    if (sock) close(sock);
     return 0;
 }
 
