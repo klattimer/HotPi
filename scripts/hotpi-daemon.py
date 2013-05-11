@@ -114,7 +114,7 @@ class HotPiDaemon:
         config = {  "COLOR_SOCKET" : None,
                     "FAN_SOCKET": None,
                     "TEMP_FILE": "/sys/class/thermal/thermal_zone0/temp",
-                    "TEMP_MULTIPLIER": "1000"
+                    "TEMP_MULTIPLIER": "1000",
                     "CPUSPEED_FILE": "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq",
                     "CPUSPEED_MULTIPLIER":"1000",
                     "CPUSPEED_LOW" : "600",
