@@ -12,6 +12,7 @@
 # Default-Stop: 95
 # Short-Description: Starts/stop the "hotpi" daemons
 # Description:      Hardware support for the HotPi GPIO board
+# Provides: hotpi
 ### END INIT INFO
 
 # Source function library.

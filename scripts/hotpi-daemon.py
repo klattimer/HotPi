@@ -153,9 +153,9 @@ class HotPiDaemon:
         sock.send("\x68");
         data = sock.recv(4)
         sock.close()
-        r = int(data[0])
-        g = int(data[1])
-        b = int(data[2])
+        r = ord(data[0])
+        g = ord(data[1])
+        b = ord(data[2])
         return [r,g,b]
 
     def setColor(self, color, duration=255, instant=False):
