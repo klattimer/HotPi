@@ -35,6 +35,9 @@ class HotPiDaemon:
         self._default_color = self.parseColor(self._conf['DEFAULT_STATIC_COLOR'])
         if self._default_color == [0,0,0]: self._default_color = self.getColor()
         
+        if self._default_pattern == LED_PATTERN_OFF:
+            self.setColor([0,0,0], 1, True)
+        
         self._current_pattern_index = 0
         self._check_interval_updates = 20 * 60
         self._check_interval_cpu = 60
