@@ -163,7 +163,7 @@ class HotPiDaemon:
         else: i = 0x42
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.connect(self._conf['COLOR_SOCKET'])
-        sock.send("%2x%2x%2x%2x%2x" % (i,r,g,b,delay))
+        sock.send("%2.2x%2.2x%2.2x%2.2x%2.2x" % (i,r,g,b,delay))
         sock.close()
         time.sleep(duration/1000.0)
 
@@ -229,7 +229,7 @@ class HotPiDaemon:
         if speed > 255: speed = 255
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.connect(self._conf['FAN_SOCKET'])
-        sock.send("\x32%2x" % speed)
+        sock.send("\x32%2.2x" % speed)
         sock.close()
 
     def checkOnline(self):
