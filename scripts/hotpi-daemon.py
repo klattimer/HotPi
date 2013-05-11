@@ -232,7 +232,7 @@ class HotPiDaemon:
         if speed > 255: speed = 255
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.connect(self._conf['FAN_SOCKET'])
-        sock.send("\x32%s" % chr(speed))
+        sock.send("\x32%s" % chr(int(speed)))
         sock.close()
 
     def checkOnline(self):
