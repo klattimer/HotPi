@@ -40,8 +40,8 @@ stop() {
             kill -9 `pidof pifand`
             kill -15 `pidof pifand`
             sleep 1
-            rm -f $FAN_SOCKET
         fi
+        rm -f $FAN_SOCKET
     fi
     
     if [ -f $COLOR_SOCKET ]; then
@@ -51,8 +51,8 @@ stop() {
             kill -9 `pidof picolord`
             kill -15 `pidof picolord`
             sleep 1
-            rm -f $COLOR_SOCKET
         fi
+        rm -f $COLOR_SOCKET
     fi
 }
 
