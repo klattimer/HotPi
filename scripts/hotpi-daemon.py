@@ -76,9 +76,9 @@ class HotPiDaemon:
             sys.exit(1)
 
         self._running = True
-        signal.signal(signal.SIGINT, self._signal_handler)
-        signal.signal(signal.SIGKILL, self._signal_handler)
-        signal.signal(signal.SIGHUP, self._signal_handler)
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGKILL, signal_handler)
+        signal.signal(signal.SIGHUP, signal_handler)
         
         last_top = None
         while self._running:
@@ -102,7 +102,7 @@ class HotPiDaemon:
             if self._current_pattern_index > len(top_pattern) - 1:
                 self._current_pattern_index = 0
 
-    def _signal_handler(self, signal, frame):
+    def stop(self):
         self._running = False
         
     def readConfig(self):
@@ -276,7 +276,15 @@ class HotPiDaemon:
         else:
             self.popPattern(LED_PATTERN_OVERHEAT)
             
+h = None
 
+def signal_handler(self, signal, frame):
+    global h
+    if h: h.stop()
+    
 if __name__ == "__main__":
+    global h
     h = HotPiDaemon()
     h.setColor((0,0,0), 0, False)
+    
+    
