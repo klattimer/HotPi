@@ -213,10 +213,10 @@ class HotPiDaemon:
     def getFanSpeed(self):
         sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         sock.connect(self._conf['FAN_SOCKET'])
-        sock.send("\x68");
+        sock.send("\x68")
         data = sock.recv(2)
         sock.close()
-        if (len(data) == 0) return 0
+        if len(data) == 0: return 0
         return int(data)
 
     def setFanSpeed(self, speed):
