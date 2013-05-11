@@ -216,7 +216,6 @@ class HotPiDaemon:
         sock.send("\x68")
         data = sock.recv(2)
         sock.close()
-        print len(data)
         if len(data) == 0:
             return 0
         return int(data)
