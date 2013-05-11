@@ -34,23 +34,29 @@ start() {
 
 stop() {
     if [ -S $FAN_SOCKET ]; then
-        kill -2 `pidof pifand`
-        sleep 1
-        if [ -f $FAN_SOCKET ]; then
-            kill -9 `pidof pifand`
-            kill -15 `pidof pifand`
+        PID=`pidof pifand`
+        if [ -n "$PID" ]; then
+            kill -2 $PID 
             sleep 1
+            if [ -S $FAN_SOCKET ]; then
+                kill -9 $PID
+                kill -15 $PID
+                sleep 1
+            fi
         fi
         rm -f $FAN_SOCKET
     fi
     
     if [ -S $COLOR_SOCKET ]; then
-        kill -2 `pidof picolord`
-        sleep 1
-        if [ -f $COLOR_SOCKET ]; then
-            kill -9 `pidof picolord`
-            kill -15 `pidof picolord`
+        PID=`pidof picolord`
+        if [ -n $PID ]; then
+            kill -2 $PID
             sleep 1
+            if [ -S $COLOR_SOCKET ]; then
+                kill -9 $PID
+                kill -15 $PID
+                sleep 1
+            fi
         fi
         rm -f $COLOR_SOCKET
     fi
