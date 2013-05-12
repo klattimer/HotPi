@@ -97,6 +97,8 @@ class HotPiDaemon:
                 self._last_check_time_online = ct
                 
             top_pattern = self.topPattern()
+            if self._current_pattern_index > len(top_pattern) - 1:
+                self._current_pattern_index = 0
             (color, duration, instant) = top_pattern[self._current_pattern_index]
             last_top = top_pattern
             
