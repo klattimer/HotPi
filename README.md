@@ -43,4 +43,4 @@ Links
 * **[Home Page](http://www.qdh.org.uk/wordpress/?page_id=15)**
 * **[GitHub](https://github.com/klattimer/HotPi)**
 * **[Manual](https://github.com/klattimer/HotPi/raw/be90a85c3960c26e9e2f1c7511b5a4885941fda9/docs/User%20Manual.pdf)**
-* **[BUY KIT](http://thepihut.com/products/hotpi)**
+* **[BUY KIT](http://www.modmypi.com/raspberry-pi/breakout-boards/kickstarter/hotpi-fan-controller-infrared-io-rtc-and-rgb-status-led/)**
